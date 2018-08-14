@@ -1,0 +1,20 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: userService
+  cloud: 
+    config: 
+      discovery: 
+        service-id: toDoConfigServer
+        enabled: true
+        
+      uri: http://localhost:8700
+       
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
