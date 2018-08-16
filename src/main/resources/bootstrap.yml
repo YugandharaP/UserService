@@ -1,5 +1,5 @@
 server:
-  port: 8765
+  port: 8500
 
 spring:
   application:
@@ -8,13 +8,7 @@ spring:
     config: 
       discovery: 
         service-id: toDoConfigServer
-        enabled: true
-        
       uri: http://localhost:8700
        
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+
