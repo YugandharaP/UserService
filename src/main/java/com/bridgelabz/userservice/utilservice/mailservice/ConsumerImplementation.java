@@ -29,12 +29,11 @@ public class ConsumerImplementation implements IMailConsumer{
 	 * */
 	
 	@Override
-	@RabbitListener(queues = "${userservice.rabbitmq.queue}")
+	@RabbitListener(queues = "${todoapplication.rabbitmq.queue}")
 	public void recievedMessage(Email email) throws MessagingException, ToDoExceptions {
 			logger.info("Recieved Message with mail: " + email);
 			emailService.sendEmail(email);
 			logger.info("send mail");
 		}
-
 }
 

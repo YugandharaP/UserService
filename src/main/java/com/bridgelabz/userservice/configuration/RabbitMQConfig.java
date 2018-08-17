@@ -20,13 +20,13 @@ import org.springframework.amqp.support.converter.MessageConverter;
  */
 @Configuration
 public class RabbitMQConfig {
-	@Value("${userservice.rabbitmq.queue}")
+	@Value("${todoapplication.rabbitmq.queue}")
 	String queueName;
 
-	@Value("${userservice.rabbitmq.exchange}")
+	@Value("${todoapplication.rabbitmq.exchange}")
 	String exchange;
 
-	@Value("${userservice.rabbitmq.rountingkey}")
+	@Value("${todoapplication.rabbitmq.routingkey}")
 	private String routingkey;
 
 	@Bean

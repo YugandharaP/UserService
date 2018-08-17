@@ -1,6 +1,7 @@
 package com.bridgelabz.userservice.configuration;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 public class ToDoConfig {
+	/*@Value("${spring.profiles.active}")
+	static String activeProfile;*/
 	/**
 	 * <p>
 	 * <b>To create bean of PasswordEncoder interface. Service method for encoding
@@ -49,15 +52,13 @@ public class ToDoConfig {
 	 * Add PropertySourcesPlaceholderConfigurer to make placeholder work. This
 	 * method MUST be static
 	 */
-	@Bean
+	/*@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
 		Resource resource;
-		String activeProfile;
-
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 
 		// get active profile
-		activeProfile = System.getProperty("spring.profiles.active");
+		//activeProfile = System.getProperty("spring.profiles.active");
 
 		// choose different property files for different active profile
 		if ("development".equals(activeProfile)) {
@@ -70,9 +71,8 @@ public class ToDoConfig {
 
 		// load the property file
 		propertySourcesPlaceholderConfigurer.setLocation(resource);
-
 		return propertySourcesPlaceholderConfigurer;
 	}
-
+*/
 }
 

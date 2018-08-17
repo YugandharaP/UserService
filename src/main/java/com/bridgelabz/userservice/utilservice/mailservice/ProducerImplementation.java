@@ -25,10 +25,10 @@ public class ProducerImplementation implements IMailProducer {
 	@Autowired
 	private AmqpTemplate amqpTemplate;
 	
-	@Value("${userservice.rabbitmq.exchange}")
+	@Value("${todoapplication.rabbitmq.exchange}")
 	private String exchange;
 	
-	@Value("${userservice.rabbitmq.rountingkey}")
+	@Value("${todoapplication.rabbitmq.routingkey}")
 	private String routingKey;
 
 	/**@param to
@@ -41,5 +41,4 @@ public class ProducerImplementation implements IMailProducer {
 			amqpTemplate.convertAndSend(exchange, routingKey, email);
 			logger.info("message sent : with "+email);
 	}
-
 }

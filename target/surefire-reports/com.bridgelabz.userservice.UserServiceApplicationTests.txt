@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.bridgelabz.userservice.UserServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.484 s <<< FAILURE! - in com.bridgelabz.userservice.UserServiceApplicationTests
+contextLoads(com.bridgelabz.userservice.UserServiceApplicationTests)  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController': Unsatisfied dependency expressed through field 'userService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userServiceImplementation': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'IPAddress' in value "${IPAddress}"
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userServiceImplementation': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'IPAddress' in value "${IPAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'IPAddress' in value "${IPAddress}"
+
