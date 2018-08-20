@@ -5,7 +5,6 @@
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/controller/UserController.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/ServletInitializer.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/mailservice/IEmailService.java
-/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/interceptor/UserInterceptor.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/mailservice/ProducerImplementation.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/model/Email.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/modelmapperservice/ModelMapperService.java
