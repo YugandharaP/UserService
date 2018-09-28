@@ -1,0 +1,216 @@
+{
+	"userRegModals": [
+		{
+			"type": "NEW_VALID_USER",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": "Jaiswal"
+		},
+		{
+			"type": "NEW_INVALID_USER_EMAIL_EXISTS",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": "Jaiswal"
+		},
+		{
+			"type": "NEW_EMAIL_ID_EMPTY",
+			"email": "",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": "Jaiswal"
+		},
+		{
+			"type": "NEW_PASSWORD_IS_EMPTY",
+			"email": "yugandharap2013@gmail.com",
+			"password": "",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": "Jaiswal"
+		},
+		{
+			"type": "NEW_FIRSTNAME_IS_EMPTY",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "",
+			"lastName": "Jaiswal"
+		},
+		{
+			"type": "NEW_LASTNAME_IS_EMPTY",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": ""
+		},
+		{
+			"type": "VALID_LOGIN",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"status": "true"
+		},
+		{
+			"type": "WRONG_LOGIN_PASSWORD",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12"
+		},
+		{
+			"type": "WRONG_LOGIN_EMAIL",
+			"email": "admin@bridgelabz123.com",
+			"password": "test12"
+		},
+		{
+			"type": "UN_AUTHORISED_USER",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"status": "false"
+		},
+		{
+			"type": "LOGIN_EMAIL_EMPTY",
+			"email": "",
+			"password": "test12345"
+		},
+		{
+			"type": "LOGIN_PASSWORD_EMPTY",
+			"email": "yugandharap2013@gmail.com",
+			"password": ""
+		},
+		{
+			"type": "REGISTERED_USER",
+			"email": "yugandharap2013@gmail.com",
+			"password": "test12345",
+			"mobile": "9166250113",
+			"firstName": "umaShankar",
+			"lastName": "Jaiswal"
+		}
+	],
+	"userTestCases": [
+		{
+			"id": 1,
+			"statusCode": 200,
+			"validErrorCode": 400,
+			"type": "HAPPY_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_VALID_USER",
+			"responseMessage": "Successful : You are successfully registered.",
+			"validErrorMessage": "Failed",
+			"purpose": "Create New Valid User"
+		},
+		{
+			"id": 2,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_INVALID_USER_EMAIL_EXISTS",
+			"responseMessage": "Fatal : Email id already present in database.",
+			"purpose": "Create User with existing Email"
+		},
+		{
+			"id": 3,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_EMAIL_ID_EMPTY",
+			"responseMessage": "NullPointerException : Input data should not be empty.",
+			"purpose": "Create User with empty email id."
+		},
+		{
+			"id": 4,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_PASSWORD_IS_EMPTY",
+			"responseMessage": "NullPointerException : Input data should not be empty.",
+			"purpose": "Create User with empty password"
+		},
+		{
+			"id": 5,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_FIRSTNAME_IS_EMPTY",
+			"responseMessage": "NullPointerException : Input data should not be empty.",
+			"purpose": "Create User with empty firstname"
+		},
+		{
+			"id": 6,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/register",
+			"category": "USER_REGISTRAION",
+			"testCaseModal": "NEW_LASTNAME_IS_EMPTY",
+			"responseMessage": "NullPointerException : Input data should not be empty.",
+			"purpose": "Create User with empty lastname"
+		},
+		{
+			"id": 7,
+			"statusCode": 200,
+			"type": "HAPPY_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "VALID_LOGIN",
+			"responseMessage": "Successful : You are successfully logged in.",
+			"purpose": "User Successful Login"
+		},
+		{
+			"id": 8,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "WRONG_LOGIN_PASSWORD",
+			"responseMessage": "Wrong Password given.",
+			"purpose": "User Wrong Password"
+		},
+		{
+			"id": 9,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "WRONG_LOGIN_EMAIL",
+			"responseMessage": "NullPointerException : Email-id not present in Database.",
+			"purpose": "User Wrong Email"
+		},
+		{
+			"id": 10,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "UN_AUTHORISED_USER",
+			"responseMessage": "AuthenticationException : UnAuthorised user !",
+			"purpose": "Test For Active User Login"
+		},
+		{
+			"id": 11,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "LOGIN_EMAIL_EMPTY",
+			"responseMessage": "NullPointerException : Email should not be null.",
+			"purpose": "Login with null email id."
+		},
+		{
+			"id": 12,
+			"statusCode": 400,
+			"type": "SAD_SCENARIO",
+			"urlPath": "/user/login",
+			"category": "USER_LOGIN",
+			"testCaseModal": "LOGIN_PASSWORD_EMPTY",
+			"responseMessage": "NullPointerException : Password should not be null.",
+			"purpose": "Login with null password."
+		}
+	]
+}

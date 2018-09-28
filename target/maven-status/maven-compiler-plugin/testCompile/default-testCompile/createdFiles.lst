@@ -1,1 +1,5 @@
-com/bridgelabz/userservice/UserServiceApplicationTests.class
+com/bridgelabz/userservice/Utility.class
+com/bridgelabz/userservice/UserTestCase.class
+com/bridgelabz/userservice/UserRegModal.class
+com/bridgelabz/userservice/TestModels.class
+com/bridgelabz/userservice/FundooNoteTest.class

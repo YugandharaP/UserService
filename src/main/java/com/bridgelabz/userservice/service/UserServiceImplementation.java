@@ -1,5 +1,11 @@
 package com.bridgelabz.userservice.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bridgelabz.userservice.model.Email;
 import com.bridgelabz.userservice.model.User;
@@ -24,6 +31,8 @@ import com.bridgelabz.userservice.utilservice.messageservice.MessageSourceServic
 import com.bridgelabz.userservice.utilservice.modelmapperservice.ModelMapperService;
 import com.bridgelabz.userservice.utilservice.redisservice.IRedisRepository;
 import com.bridgelabz.userservice.utilservice.securityservice.JwtTokenProvider;
+import com.bridgelabz.userservice.utilservice.sqsmailservice.MessageService;
+
 
 
 /**
@@ -40,8 +49,9 @@ public class UserServiceImplementation implements IUserService {
 	IUserRepository userRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImplementation.class);
 
+	@SuppressWarnings("unused")
 	@Autowired
-	IEmailService emailService;
+	private IEmailService emailService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -50,10 +60,14 @@ public class UserServiceImplementation implements IUserService {
 	private IMailProducer mailProducer;
 	
 	@Autowired
-	ModelMapperService modelMapper;
+	private ModelMapperService modelMapper;
 	
 	@Autowired
-	IRedisRepository redisRepository;
+	private IRedisRepository redisRepository;
+	
+	@Autowired
+	private MessageService messageService;
+	
 	
 	@Value("${ipaddress}")
 	String ipAddress;
@@ -66,30 +80,31 @@ public class UserServiceImplementation implements IUserService {
 	 */
 	@Override
 	public String login(UserDTO userdto) throws ToDoExceptions, Exception {
-	
 		RestPreconditions.checkNotNull(userdto.getEmail(), MessageSourceService.getMessage("106"));
 		RestPreconditions.checkNotNull(userdto.getPassword(),  MessageSourceService.getMessage("107"));
-	
+		RestPreconditions.checkArgument(userdto.getEmail().equals(""), MessageSourceService.getMessage("106"));
+		RestPreconditions.checkArgument(userdto.getPassword().equals(""), MessageSourceService.getMessage("107") );
+		
 		Optional<User> optionalUser = userRepository.findByEmail(userdto.getEmail());
 		RestPreconditions.checkArgument(!optionalUser.isPresent(), MessageSourceService.getMessage("111"));
-		RestPreconditions.checkArgument(!optionalUser.get().isStatus(), MessageSourceService.getMessage("113"));
 		if (!passwordEncoder.matches(userdto.getPassword(), optionalUser.get().getPassword())) {
 			LOGGER.error( MessageSourceService.getMessage("112"));
 			throw new ToDoExceptions( MessageSourceService.getMessage("112"));
 		}
+		RestPreconditions.checkArgument(!optionalUser.get().isStatus(), MessageSourceService.getMessage("113"));
+
 			User user = optionalUser.get();
 			JwtTokenProvider token = new JwtTokenProvider();
 			String tokenGenerated = token.generator(user);
 			LOGGER.info("token : " + tokenGenerated);
 			String userId= user.getId();
 			String tokenFromRedis = redisRepository.getToken(userId);
-			RestPreconditions.checkNotNull(tokenFromRedis, MessageSourceService.getMessage("112"));
 			LOGGER.info("token from Redis"+tokenFromRedis);
-			if(tokenFromRedis!=null) {
-				return tokenGenerated;
-			}
+
+			RestPreconditions.checkNotNull(tokenFromRedis, MessageSourceService.getMessage("114"));
 			LOGGER.error( MessageSourceService.getMessage("114"));
-			throw new ToDoExceptions( MessageSourceService.getMessage("114"));
+			
+			return tokenFromRedis;
 	}
 
 	/**
@@ -105,8 +120,11 @@ public class UserServiceImplementation implements IUserService {
 		RestPreconditions.checkNotNull(userdto.getFirstName(), MessageSourceService.getMessage("108"));
 		RestPreconditions.checkNotNull(userdto.getLastName(), MessageSourceService.getMessage("109"));
 		RestPreconditions.checkNotNull(userdto.getMobile(), MessageSourceService.getMessage("110"));
-
+		RestPreconditions.checkArgument(userdto.getEmail().equals("")||userdto.getFirstName().equals("")||
+										userdto.getLastName().equals(""), MessageSourceService.getMessage("121"));
+		
 		Optional<User> optionalUser = userRepository.findByEmail(userdto.getEmail());
+		
 		RestPreconditions.checkArgument(optionalUser.isPresent(), MessageSourceService.getMessage("115"));
 
 		User user = modelMapper.map(userdto, User.class);
@@ -135,7 +153,8 @@ public class UserServiceImplementation implements IUserService {
 		email.setTo(user.getEmail());
 		email.setSubject("Bellow activation Link");
 		email.setBody(ipAddress+"/useractivation/?token=" + validToken);
-		mailProducer.produceMessage(email);
+		//mailProducer.produceMessage(email);
+		messageService.sendMessage(email);
 	}
 
 	/**
@@ -145,9 +164,9 @@ public class UserServiceImplementation implements IUserService {
 	 * @throws RegistrationExceptions
 	 */
 	@Override
-	public void activateUser(String token) throws ToDoExceptions {
-		JwtTokenProvider claimToken = new JwtTokenProvider();
-		String userId = claimToken.parseJWT(token);
+	public void activateUser(String userId) throws ToDoExceptions {
+		/*JwtTokenProvider claimToken = new JwtTokenProvider();
+		String userId = claimToken.parseJWT(token);*/
 		Optional<User> optionalUser = userRepository.findById(userId);
 		RestPreconditions.checkArgument(!optionalUser.isPresent(), MessageSourceService.getMessage("106"));
 		User user = optionalUser.get();
@@ -162,19 +181,16 @@ public class UserServiceImplementation implements IUserService {
 	 * @throws MessagingException
 	 */
 	@Override
-	public void forgotPassword(String emailId) throws ToDoExceptions, MessagingException {
+	public void forgotPassword(String emailId,String token) throws ToDoExceptions, MessagingException {
 		RestPreconditions.checkNotNull(emailId, MessageSourceService.getMessage("106"));
 		Optional<User> user = userRepository.findByEmail(emailId);
 		RestPreconditions.checkNotNull(user, MessageSourceService.getMessage("111"));
-		
-		JwtTokenProvider token = new JwtTokenProvider();
-		String validToken = token.generator(user.get());            
-		RestPreconditions.checkNotNull(validToken, MessageSourceService.getMessage("114"));
+		RestPreconditions.checkNotNull(token, MessageSourceService.getMessage("114"));
 		
 		Email email = new Email();
 		email.setTo(user.get().getEmail());
 		email.setSubject("Your token is here");
-		email.setBody(validToken);
+		email.setBody(token);
 		mailProducer.produceMessage(email);
 	}
 
@@ -214,5 +230,35 @@ public class UserServiceImplementation implements IUserService {
 		 
 	}
 
-
+	@Override
+	public void setProfilePicture(String userId, String imageUrl) throws ToDoExceptions, MalformedURLException {
+		RestPreconditions.checkNotNull(imageUrl, MessageSourceService.getMessage("118"));
+		Optional<User> optionalUser = userRepository.findById(userId);
+		User user = optionalUser.get();
+		List<URL>imageList= user.getImageList();
+		if(imageList==null) {
+			imageList=new ArrayList<URL>();
+		}
+		URL url=new URL(imageUrl);
+		imageList.add(url);
+		user.setImageList(imageList);
+		userRepository.save(user);
+	}
+	
+	/**
+	 * @param file
+	 * To Convert multipart file to java file
+	 * @return file
+	 * @throws IOException
+	 */
+	public String convertMultipartFileToJavaFile(MultipartFile file) throws IOException {
+	    File convFile = new File(file.getOriginalFilename());
+	    @SuppressWarnings("unused")
+		String filename = file.getOriginalFilename();
+	    convFile.createNewFile();
+	    FileOutputStream fos = new FileOutputStream(convFile);
+	    fos.write(file.getBytes());
+	    fos.close();
+	    return convFile.getAbsolutePath();
+	}
 }

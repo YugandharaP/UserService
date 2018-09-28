@@ -4,11 +4,14 @@ com/bridgelabz/userservice/utilservice/modelmapperservice/ModelMapperService.cla
 com/bridgelabz/userservice/utilservice/mailservice/ProducerImplementation.class
 com/bridgelabz/userservice/utilservice/redisservice/RedisRepositoryImplementation.class
 com/bridgelabz/userservice/utilservice/redisservice/IRedisRepository.class
+com/bridgelabz/userservice/utilservice/sqsmailservice/MessageService$1.class
 com/bridgelabz/userservice/utilservice/mailservice/ConsumerImplementation.class
+com/bridgelabz/userservice/utilservice/sqsmailservice/MessageService.class
 com/bridgelabz/userservice/utilservice/mailservice/EmailServiceImplementation.class
 com/bridgelabz/userservice/model/User.class
 com/bridgelabz/userservice/utilservice/messageservice/MessageSourceService.class
 com/bridgelabz/userservice/utilservice/mailservice/IMailProducer.class
+com/bridgelabz/userservice/configuration/SQSConfig.class
 com/bridgelabz/userservice/utilservice/mailservice/IEmailService.class
 com/bridgelabz/userservice/utilservice/exceptions/ToDoExceptions.class
 com/bridgelabz/userservice/model/UserDTO.class
@@ -21,8 +24,12 @@ com/bridgelabz/userservice/utilservice/securityservice/JwtTokenProvider.class
 com/bridgelabz/userservice/configuration/RabbitMQConfig.class
 com/bridgelabz/userservice/utilservice/exceptions/RestPreconditions.class
 com/bridgelabz/userservice/configuration/SwaggerConfig.class
+com/bridgelabz/userservice/configuration/JMSSQSConfig$1.class
+com/bridgelabz/userservice/configuration/JMSSQSConfig.class
 com/bridgelabz/userservice/controller/UserController.class
 com/bridgelabz/userservice/UserServiceApplication.class
+com/bridgelabz/userservice/utilservice/sqsmailservice/SQSListener.class
+com/bridgelabz/userservice/service/IFeignClientService.class
 com/bridgelabz/userservice/model/Email.class
 com/bridgelabz/userservice/utilservice/exceptions/ToDoExceptionHandler.class
 com/bridgelabz/userservice/repository/IUserRepository.class

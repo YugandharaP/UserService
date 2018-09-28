@@ -1,10 +1,16 @@
 package com.bridgelabz.userservice.service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.security.auth.login.LoginException;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.bridgelabz.userservice.model.User;
 import com.bridgelabz.userservice.model.UserDTO;
 import com.bridgelabz.userservice.utilservice.exceptions.ToDoExceptions;
@@ -49,11 +55,12 @@ public interface IUserService {
 
 
 	/**
+	 * @param token 
 	 * @param String emailId
 	 * <p>to change password for user of todo application
 	 * @throws Exception 
 	 */
-	void forgotPassword(String emailId) throws Exception;
+	void forgotPassword(String emailId, String token) throws Exception;
 
 	/**
 	 * @param passworddto,String token
@@ -73,9 +80,32 @@ public interface IUserService {
 
 
 	/**
+	 * 
+	 * <p><b>return list Of all users which is present in database</b></p>
 	 * @return List Of Users
 	 * @throws ToDoExceptions 
 	 */
 	public List<?> getAllUser() throws ToDoExceptions;
+
+	/**
+	 * @param token
+	 * @param imageUrl
+	 * @throws ToDoExceptions 
+	 * @throws MalformedURLException 
+	 * @throws IOException 
+	 * @throws AmazonClientException 
+	 * @throws AmazonServiceException 
+	 */
+	void setProfilePicture(String userId, String imageUrl) throws ToDoExceptions, MalformedURLException, AmazonServiceException, AmazonClientException, IOException;
+
+
+	/**
+	 * @param imageFile
+	 * @return file
+	 * @throws IOException 
+	 */
+	String convertMultipartFileToJavaFile(MultipartFile imageFile) throws IOException;
+
+
 	
 }

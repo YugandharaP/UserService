@@ -1,6 +1,7 @@
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/model/UserDTO.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/model/User.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/model/ResponseDTO.java
+/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/sqsmailservice/SQSListener.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/RabbitMQConfig.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/controller/UserController.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/ServletInitializer.java
@@ -17,11 +18,15 @@
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/exceptions/ToDoExceptionHandler.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/redisservice/RedisRepositoryImplementation.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/redisservice/IRedisRepository.java
+/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/sqsmailservice/MessageService.java
+/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/service/IFeignClientService.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/UserServiceApplication.java
+/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/JMSSQSConfig.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/RedisConfig.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/SwaggerConfig.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/service/IUserService.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/ToDoConfig.java
+/home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/configuration/SQSConfig.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/mailservice/IMailConsumer.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/mailservice/IMailProducer.java
 /home/adminsitrator/Documents/ToDoApplication/UserService/src/main/java/com/bridgelabz/userservice/utilservice/exceptions/RestPreconditions.java

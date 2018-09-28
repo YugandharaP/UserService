@@ -24,7 +24,7 @@ public class ToDoExceptionHandler {
 	public ResponseEntity<ResponseDTO> todoExceptionHandler(ToDoExceptions exception) {
 		ResponseDTO response = new ResponseDTO();
 		response.setMessage(exception.getMessage());
-		response.setStatus(-1);
+		response.setStatus(400);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.BAD_REQUEST);
 	}
 	/**
@@ -32,12 +32,12 @@ public class ToDoExceptionHandler {
 	 * @return response with Http status
 	 * <p><b>To handle generic exceptions </b></p>	
 	 **/
-	/*@ExceptionHandler(Exception.class)
+	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseDTO> genericExceptionHandler(Exception exception) {
 		ResponseDTO response = new ResponseDTO();
 		response.setMessage("something went wrong!");
 		response.setStatus(-1);
 		return new ResponseEntity<ResponseDTO>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	}*/
+	}
 }
 

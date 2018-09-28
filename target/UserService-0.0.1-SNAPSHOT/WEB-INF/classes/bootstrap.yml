@@ -1,0 +1,15 @@
+server:
+  port: 8500
+
+spring:
+  application:
+    name: userService
+  cloud: 
+    config: 
+      uri: http://localhost:8700
+      profile: dev
+  profiles:
+    active:
+    - dev
+
+      

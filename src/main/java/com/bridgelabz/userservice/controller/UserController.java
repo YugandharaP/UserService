@@ -1,14 +1,17 @@
 package com.bridgelabz.userservice.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +19,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.bridgelabz.userservice.model.ResponseDTO;
 import com.bridgelabz.userservice.model.User;
 import com.bridgelabz.userservice.model.UserDTO;
+import com.bridgelabz.userservice.service.IFeignClientService;
 import com.bridgelabz.userservice.service.IUserService;
 import com.bridgelabz.userservice.utilservice.exceptions.ToDoExceptions;
 import com.bridgelabz.userservice.utilservice.messageservice.MessageSourceService;
 import com.bridgelabz.userservice.utilservice.redisservice.IRedisRepository;
+
 
 
 /**
@@ -46,10 +55,16 @@ public class UserController {
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
-	IUserService userService ;
+	private IUserService userService ;
 	
 	@Autowired
-	IRedisRepository redisRepository;
+	private IRedisRepository redisRepository;
+	
+	@Autowired
+	private IFeignClientService fiegnClientService;
+	
+	@Value("${innerFolderName}")
+	String innerFolderName;
 	
 	/**<p><b>To take register url from view and perform operations</b></p>
 	 * @param registerdto
@@ -58,14 +73,13 @@ public class UserController {
 	 * @throws RegistrationExceptions
 	 * @throws MessagingException
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping("/register")
-	public ResponseEntity<ResponseDTO> registerUser(@RequestBody UserDTO userdto ) throws ToDoExceptions, MessagingException {
+	public ResponseEntity<?> registerUser(@RequestBody UserDTO userdto ) throws ToDoExceptions, MessagingException {
 		logger.info(REQUEST_ID);
 		
 		userService.register(userdto);
 		logger.info(RESPONSE_ID);
-		return new ResponseEntity(MessageSourceService.getMessage("100")+userdto.getEmail(),HttpStatus.OK);
+		return new ResponseEntity<>(MessageSourceService.getMessage("100")+userdto.getEmail(),HttpStatus.OK);
 	}
 	/**<p><b>To take activation url from view and perform operations</b></p>
 	 * @param token
@@ -75,9 +89,10 @@ public class UserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/useractivation")
-	public ResponseEntity<ResponseDTO> activateUser(@RequestParam(value="token") String token ) throws ToDoExceptions {
+	public ResponseEntity<ResponseDTO> activateUser(HttpServletRequest request ) throws ToDoExceptions {
 		logger.info(REQUEST_ID);
-		userService.activateUser(token);
+		String userId= request.getHeader("userId");
+		userService.activateUser(userId);
 		logger.info(RESPONSE_ID);
 		return new ResponseEntity(MessageSourceService.getMessage("101"),HttpStatus.OK);
 	}
@@ -112,9 +127,10 @@ public class UserController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/forgetpassword/{email}")
-	public ResponseEntity<ResponseDTO> forgotPassword(@PathVariable (value="email") String email ) throws Exception {
+	public ResponseEntity<ResponseDTO> forgotPassword(@PathVariable (value="email") String email,HttpServletRequest request ) throws Exception {
 			logger.info(REQUEST_ID);
-			userService.forgotPassword(email);
+			String token= request.getHeader("token");
+			userService.forgotPassword(email,token);
 			logger.info(RESPONSE_ID);
 			return new ResponseEntity(MessageSourceService.getMessage("117"),HttpStatus.OK);
 	}
@@ -128,9 +144,10 @@ public class UserController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/resetpassword")
-	public ResponseEntity<ResponseDTO> resetpassword(@RequestParam(value="token") String token ,@RequestBody UserDTO userdto) throws ToDoExceptions 
+	public ResponseEntity<ResponseDTO> resetpassword(HttpServletRequest request ,@RequestBody UserDTO userdto) throws ToDoExceptions 
 	{
 			logger.info(REQUEST_ID);
+			String token = request.getHeader("token");
 			userService.resetPassword(token,userdto);
 			logger.info(RESPONSE_ID);
 			return new ResponseEntity(MessageSourceService.getMessage("104"),HttpStatus.OK);
@@ -160,5 +177,30 @@ public class UserController {
 		List<?> userList = userService.getAllUser();
 		logger.info(RESPONSE_ID);
 		return  new ResponseEntity<>(userList,HttpStatus.OK);
+	}
+	
+	/**
+	 * @param token
+	 * @param folderName
+	 * @param imageFile
+	 * @param innerFolderName
+	 * <p><b></b></p>
+	 * @return response to the view
+	 * @throws AmazonServiceException
+	 * @throws AmazonClientException
+	 * @throws IOException
+	 * @throws ToDoExceptions
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostMapping("/uploadimage")
+	public ResponseEntity<?> uploadImage(@RequestHeader(value="token")String token,
+										@RequestParam MultipartFile imageFile,HttpServletRequest request) 
+										throws AmazonServiceException, AmazonClientException, IOException, ToDoExceptions {
+		
+		String filePath=userService.convertMultipartFileToJavaFile(imageFile);
+		String userId = request.getHeader("userId");
+		String imageUrl =  fiegnClientService.uploadImage(userId, filePath,innerFolderName);
+		userService.setProfilePicture(userId, imageUrl);
+		return new ResponseEntity(MessageSourceService.getMessage("120"),HttpStatus.OK);
 	}
 }

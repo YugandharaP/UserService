@@ -1,3 +1,0 @@
-spring:
-  profiles:
-    active: application-dev.properties

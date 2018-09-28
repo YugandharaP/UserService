@@ -1,4 +1,7 @@
 package com.bridgelabz.userservice.model;
+import java.net.URL;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 /**
@@ -10,14 +13,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private String id;
 	private String email;
 	private String password;
 	private String firstName;
 	private String lastName;
 	private String mobile;
+	private List<URL>imageList;
 	private boolean status;
 
 	public User() {
@@ -56,6 +58,16 @@ public class User {
 	public String getLastName() {
 		return lastName;
 	}
+
+	public List<URL> getImageList() {
+		return imageList;
+	}
+
+
+	public void setImageList(List<URL> imageList) {
+		this.imageList = imageList;
+	}
+
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
